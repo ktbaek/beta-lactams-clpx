@@ -39,15 +39,15 @@ analyze_tracks <- function(links, spots) {
     message("one frame generations")
   }
   
-  # Assign a unique cell generation-ID to each daughter cell
-  gen_ID_1 <- links %>%
+  # Assign a unique cell ID to each daughter spot
+  cell_ID <- links %>%
     filter(!generation_end | !generation_start) %>%
     filter(generation_start) %>%
     mutate(generation = seq_len(length.out = nrow(.))) %>%
     select(source, generation)
   
   links %<>%
-    join(gen_ID_1, by = c("source")) %>% tbl_df ## Non-daughter cells will for now have NAs as gen_ID
+    join(cell_ID, by = c("source")) %>% tbl_df ## Non-daughter cells will for now have NAs as gen_ID
   
   i <- nrow(links)
   
@@ -83,18 +83,18 @@ analyze_tracks <- function(links, spots) {
 }
 
 
-## Grow each cell generation by one frame. This function takes the spots that already have an assigned cell generation-ID, and assigns the same ID to their targets. If the ID of a target is already known, no change is made. The function is used inside the 'analyze_tracks' function in a loop. 
+## Grow each cell generation by one frame. This function takes the spots that already have an assigned cell-ID, and assigns the same ID to their targets. If the ID of a target is already known, no change is made. The function is used inside the 'analyze_tracks' function in a loop. 
 
 grow <- function(data) {
   
-  gen_ID <- data %>%
+  cell_ID <- data %>%
     filter(!is.na(generation)) %>% 
     select(target, generation) %>%
     rename(source = target,
            y = generation) 
   
   data %<>%
-    join(gen_ID, by = c("source")) %>%
+    join(cell_ID, by = c("source")) %>%
     rename(x = generation) %>%
     mutate(generation = x, #why did I add this line??
            generation = ifelse(is.na(x),
