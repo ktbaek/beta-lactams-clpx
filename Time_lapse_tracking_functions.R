@@ -96,8 +96,7 @@ grow <- function(data) {
   data %<>%
     join(cell_ID, by = c("source")) %>%
     rename(x = generation) %>%
-    mutate(generation = x, #why did I add this line??
-           generation = ifelse(is.na(x),
+    mutate(generation = ifelse(is.na(x),
                                ifelse(!is.na(y), y, x),
                                x)
     ) %>%
