@@ -51,7 +51,7 @@ analyze_tracks <- function(links, spots) {
   
   i <- nrow(links)
   
-  # Apply the 'grow' function to the data until no new generation-IDs are added
+  # Apply the 'grow' function to the data until no new cell-IDs are added
   
   repeat{
     
