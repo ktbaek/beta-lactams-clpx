@@ -98,7 +98,7 @@ wt %<>%
 
 # Calculate WT oxa pedigree -----------------------------------------------
 
-# First I need to correct for some minor bug in calc_pedigree function that I can't seem to fix easily.
+# First I need to correct for some minor bug in analyze_tracks function that I can't seem to fix easily.
 
 WT_OX %<>%
   mutate(generation = replace(generation, POSITION_T == 0 & TRACK_ID == 1, 211)) %>%
